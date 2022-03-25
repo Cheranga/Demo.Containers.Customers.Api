@@ -17,7 +17,7 @@ namespace Customers.Api.Extensions
                 ErrorCode = operation.ErrorCode,
                 Errors = operation.ValidationResult.Errors.Select(x => new ErrorData
                 {
-                    Field = x.ErrorCode,
+                    Field = x.PropertyName,
                     Message = x.ErrorMessage
                 }).ToList()
             };

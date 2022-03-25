@@ -12,10 +12,8 @@ namespace Customers.Api.Features.GetCustomer
 {
     public class GetCustomerRequest : IOperation, IRequest<Result<GetCustomerResponse>>
     {
-        [JsonIgnore]
         public string CorrelationId { get; set; }
         
-        [FromRoute]
         public string CustomerId { get; set; }
     }
     
