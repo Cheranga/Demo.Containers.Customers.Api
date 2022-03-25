@@ -19,22 +19,22 @@ namespace Customers.Api.Features.CreateCustomer
     
     public class CreateCustomerCommandHandler :IRequestHandler<CreateCustomerCommand, Result<string>>
     {
-        private readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger<CreateCustomerCommandHandler> _logger;
         
         private const string InsertCommand = "insert into Customers (Title, FirstName, LastName) " +
                                              "output inserted.Id, inserted.Title, inserted.FirstName, inserted.LastName " +
                                              "values (@Title, @FirstName, @LastName)";
 
-        public CreateCustomerCommandHandler(IDbConnectionFactory dbConnectionFactory, ILogger<CreateCustomerCommandHandler> logger)
+        public CreateCustomerCommandHandler(IDbConnectionFactory connectionFactory, ILogger<CreateCustomerCommandHandler> logger)
         {
-            _dbConnectionFactory = dbConnectionFactory;
+            _connectionFactory = connectionFactory;
             _logger = logger;
         }
         
         public async Task<Result<string>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            using (var connection = _dbConnectionFactory.GetConnection())
+            using (var connection = _connectionFactory.GetConnection())
             {
                 try
                 {

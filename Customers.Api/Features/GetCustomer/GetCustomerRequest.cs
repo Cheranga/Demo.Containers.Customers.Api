@@ -21,21 +21,33 @@ namespace Customers.Api.Features.GetCustomer
     
     public class GetCustomerRequestHandler : IRequestHandler<GetCustomerRequest, Result<GetCustomerResponse>>
     {
+        private readonly IMediator _mediator;
         private readonly ILogger<GetCustomerRequestHandler> _logger;
 
-        public GetCustomerRequestHandler(ILogger<GetCustomerRequestHandler> logger)
+        public GetCustomerRequestHandler(IMediator mediator, ILogger<GetCustomerRequestHandler> logger)
         {
+            _mediator = mediator;
             _logger = logger;
         }
         
         public async Task<Result<GetCustomerResponse>> Handle(GetCustomerRequest request, CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+            var query = new GetCustomerByIdQuery
+            {
+                CorrelationId = request.CorrelationId,
+                CustomerId = request.CustomerId
+            };
+
+            var operation = await _mediator.Send(query, cancellationToken);
+            if (!operation.Status)
+            {
+                return Result<GetCustomerResponse>.Failure(operation.ErrorCode, operation.ValidationResult);
+            }
 
             return Result<GetCustomerResponse>.Success(new GetCustomerResponse
             {
-                CustomerId = request.CustomerId,
-                FullName = "Mr. Cheranga Hatangala"
+                CustomerId = operation.Data.Id,
+                FullName = $"{operation.Data.Title} {operation.Data.FirstName} {operation.Data.LastName}"
             });
         }
     }
