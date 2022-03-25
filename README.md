@@ -4,12 +4,28 @@
 
 An ASP.NET Core 5 Web API to manage customers.
 
-## Goals
+## :bulb: Goals
 
 - [x] Vertical sliced architecture
-- [ ] Docker as ORM
+- [ ] Dapper as ORM
 - [ ] Use CI/CD to deploy as a container to ACI
 - [ ] Use CI/CD to deploy as a container to AKS
+
+###  :bulb: Goal - Vertical sliced architecture
+
+- [x] Setup controller inside the respective feature
+- [x] Setup the mediators inside their respective feature
+- [x] Wire up the relationship between controllers
+
+###  :bulb: Goal - Dapper as ORM
+
+- [ ] Run `SQL Server` in a docker container
+- [ ] Test connectivity to the local running container
+- [ ] Create commands and queries
+- [ ] Modify the services to use the commands and queries
+- [ ] Test commands and queries
+- [ ] Use docker compose to run both API and the SQL server containers
+
 
 ## References
 
