@@ -37,9 +37,11 @@ namespace Customers.Api.Features.GetCustomer
 
                     try
                     {
-                        var dataModel = await connection.QuerySingleOrDefaultAsync<CustomerDataModel>(query, request);
-
-
+                        int.TryParse(request.CustomerId, out var customerId);
+                        var dataModel = await connection.QuerySingleOrDefaultAsync<CustomerDataModel>(query, new
+                        {
+                            CustomerId = customerId
+                        });
                         return Result<CustomerDataModel>.Success(dataModel);
                     }
                     catch (Exception exception)

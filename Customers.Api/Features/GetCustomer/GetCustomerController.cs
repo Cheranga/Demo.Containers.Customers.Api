@@ -42,7 +42,7 @@ namespace Customers.Api.Features.GetCustomer
             var errorResponse = operation.ToErrorResponse();
             return operation.ErrorCode switch
             {
-                ErrorCodes.NotFound => NotFound(errorResponse),
+                ErrorCodes.CustomerNotFound => NotFound(errorResponse),
                 _ => new ObjectResult(errorResponse) {StatusCode = (int) (HttpStatusCode.InternalServerError)}
             };
         }

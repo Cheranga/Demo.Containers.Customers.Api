@@ -44,10 +44,16 @@ namespace Customers.Api.Features.GetCustomer
                 return Result<GetCustomerResponse>.Failure(operation.ErrorCode, operation.ValidationResult);
             }
 
+            var customer = operation.Data;
+            if (customer == null)
+            {
+                return Result<GetCustomerResponse>.Failure(ErrorCodes.CustomerNotFound, ErrorMessages.CustomerNotFound);
+            }
+
             return Result<GetCustomerResponse>.Success(new GetCustomerResponse
             {
-                CustomerId = operation.Data.Id,
-                FullName = $"{operation.Data.Title} {operation.Data.FirstName} {operation.Data.LastName}"
+                CustomerId = customer.Id,
+                FullName = $"{customer.Title} {customer.FirstName} {customer.LastName}"
             });
         }
     }
