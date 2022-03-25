@@ -20,21 +20,35 @@ namespace Customers.Api.Features.CreateCustomer
     
     public class CreateCustomerRequestHandler : IRequestHandler<CreateCustomerRequest, Result<CreateCustomerResponse>>
     {
+        private readonly IMediator _mediator;
         private readonly ILogger<CreateCustomerRequestHandler> _logger;
 
-        public CreateCustomerRequestHandler(ILogger<CreateCustomerRequestHandler> logger)
+        public CreateCustomerRequestHandler(IMediator mediator, ILogger<CreateCustomerRequestHandler> logger)
         {
+            _mediator = mediator;
             _logger = logger;
         }
         
         public async Task<Result<CreateCustomerResponse>> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+            var command = new CreateCustomerCommand
+            {
+                CorrelationId = request.CorrelationId,
+                Title = request.Title,
+                FirstName = request.FirstName,
+                LastName = request.LastName
+            };
+
+            var operation = await _mediator.Send(command, cancellationToken);
+            if (!operation.Status)
+            {
+                return Result<CreateCustomerResponse>.Failure(operation.ErrorCode, operation.ValidationResult);
+            }
 
             return Result<CreateCustomerResponse>.Success(new CreateCustomerResponse
             {
-                CorrelationId = Guid.NewGuid().ToString("N"),
-                CustomerId = "1"
+                CorrelationId = request.CorrelationId,
+                CustomerId = operation.Data
             });
         }
     }
