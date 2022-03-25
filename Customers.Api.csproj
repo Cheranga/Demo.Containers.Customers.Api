@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-    </PropertyGroup>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>        
+      <UserSecretsId>e9a6b018-e016-4110-91d4-41baf91ac067</UserSecretsId>
+  </PropertyGroup>   
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
