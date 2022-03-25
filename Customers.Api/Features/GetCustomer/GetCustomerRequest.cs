@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Customers.Api.Core;
 using Customers.Api.Features.CreateCustomer;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Customers.Api.Features.GetCustomer
 {
-    public class GetCustomerRequest : IRequest<Result<GetCustomerResponse>>
+    public class GetCustomerRequest : IOperation, IRequest<Result<GetCustomerResponse>>
     {
+        [JsonIgnore]
+        public string CorrelationId { get; set; }
+        
+        [FromRoute]
         public string CustomerId { get; set; }
     }
     

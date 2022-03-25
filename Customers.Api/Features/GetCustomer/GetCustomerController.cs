@@ -18,13 +18,14 @@ namespace Customers.Api.Features.GetCustomer
         }
         
         [HttpGet("{customerId}", Name = "GetCustomer")]
-        public async Task<IActionResult> GetAsync([FromRoute] string customerId)
+        public async Task<IActionResult> GetAsync([FromRoute] string customerId, [FromHeader]string correlationId)
         {
             var request = new GetCustomerRequest
             {
+                CorrelationId = correlationId,
                 CustomerId = customerId
             };
-
+            
             var operation = await _mediator.Send(request);
             var response = GetResponse(operation);
 

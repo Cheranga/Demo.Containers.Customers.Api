@@ -8,8 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Customers.Api.Features.CreateCustomer
 {
-    public class CreateCustomerRequest : IRequest<Result<CreateCustomerResponse>>
+    public class CreateCustomerRequest : IOperation, IRequest<Result<CreateCustomerResponse>>
     {
+        [JsonIgnore]
         public string CorrelationId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
