@@ -19,8 +19,11 @@ namespace Customers.Api.Features.CreateCustomer
         }
 
         [HttpPost(Name = "CreateCustomer")]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerRequest request, [FromHeader(Name = "correlationid")]string correlationId)
         {
+            request ??= new CreateCustomerRequest();
+            request.CorrelationId = correlationId;
+            
             var operation = await _mediator.Send(request);
 
             var response = GetResponse(operation);

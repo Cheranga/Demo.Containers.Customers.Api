@@ -18,13 +18,14 @@ namespace Customers.Api.Features.GetCustomer
         }
         
         [HttpGet("{customerId}", Name = "GetCustomer")]
-        public async Task<IActionResult> GetAsync([FromRoute] string customerId)
+        public async Task<IActionResult> GetAsync([FromRoute] string customerId, [FromHeader]string correlationId)
         {
             var request = new GetCustomerRequest
             {
+                CorrelationId = correlationId,
                 CustomerId = customerId
             };
-
+            
             var operation = await _mediator.Send(request);
             var response = GetResponse(operation);
 
@@ -41,7 +42,7 @@ namespace Customers.Api.Features.GetCustomer
             var errorResponse = operation.ToErrorResponse();
             return operation.ErrorCode switch
             {
-                ErrorCodes.NotFound => NotFound(errorResponse),
+                ErrorCodes.CustomerNotFound => NotFound(errorResponse),
                 _ => new ObjectResult(errorResponse) {StatusCode = (int) (HttpStatusCode.InternalServerError)}
             };
         }

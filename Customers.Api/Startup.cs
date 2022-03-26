@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Customers.Api.Core;
+using Customers.Api.Infrastructure.DataAccess;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -31,9 +32,21 @@ namespace Customers.Api
         {
             RegisterMediators(services);
             RegisterValidators(services);
-            
+            RegisterInfrastructure(services, Configuration);
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Customers.Api", Version = "v1"}); });
+        }
+
+        private void RegisterInfrastructure(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+
+            services.AddSingleton(_ =>
+            {
+                var databaseConfig = configuration.GetSection(nameof(DatabaseConfig)).Get<DatabaseConfig>();
+                return databaseConfig;
+            });
         }
 
         private void RegisterMediators(IServiceCollection services)
