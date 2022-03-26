@@ -24,7 +24,7 @@ An ASP.NET Core 5 Web API to manage customers.
 - [x] Create commands and queries
 - [x] Modify the services to use the commands and queries
 - [x] Test commands and queries
-- [ ] Use docker compose to run both API and the SQL server containers
+- [x] Use docker compose to run both API and the SQL server containers
 
 
 ## References
